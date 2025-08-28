@@ -6,7 +6,6 @@
 
     shellAliases = {
       "emacs" = "emacsclient -c";
-      "ls" = "eza";
       "cat" = "bat";
       "journalctl" = "SYSTEMD_PAGERSECURE=1 SYSTEMD_PAGER='bat -l syslog' ${pkgs.systemd}/bin/journalctl";
     };
@@ -36,7 +35,7 @@
     bash-language-server
 
     # Dependencies for our bash configuration
-    bat tldr atuin eza starship
+    bat tldr atuin starship
     
     # Makes it easier to implement vterm tracking in emacs
     bash-preexec
