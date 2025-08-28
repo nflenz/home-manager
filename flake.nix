@@ -8,10 +8,9 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    flatpaks.url = "github:GermanBread/declarative-flatpak/stable-v3";
   };
 
-  outputs = { nixpkgs, flatpaks, home-manager, ... }:
+  outputs = { nixpkgs, home-manager, ... }:
     let
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
@@ -22,7 +21,6 @@
         # Specify your home configuration modules here, for example,
         # the path to your home.nix.
         modules = [
-          flatpaks.homeManagerModules.default
           ./home.nix
         ];
 

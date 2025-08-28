@@ -29,14 +29,6 @@
 
   nixpkgs.config.allowUnfree = true;
 
-  services.flatpak.remotes = {
-    "flathub" = "https://dl.flathub.org/repo/flathub.flatpakrepo";
-  };
-
-  services.flatpak.packages = [
-    "flathub:app/com.discordapp.Discord"
-  ];
-
   services.emacs = {
     package = pkgs.emacs-gtk;
     enable = true;
