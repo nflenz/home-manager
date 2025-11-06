@@ -10,7 +10,7 @@ $directory\
 $git_branch\
 $git_status\
 [](fg:color_aqua bg:color_blue)\
-$kubernetes\
+$custom\
 [](fg:color_blue bg:color_bg3)\
 $nix_shell\
 $docker_context\
@@ -59,15 +59,18 @@ truncation_length = 3
 truncation_symbol = ""
 
 [git_branch]
+disabled = true
 symbol = ""
 style = "bg:color_aqua"
 format = '[[ $symbol $branch ](fg:color_fg0 bg:color_aqua)]($style)'
 
 [git_status]
+disabled = true
 style = "bg:color_aqua"
 format = '[[($all_status$ahead_behind )](fg:color_fg0 bg:color_aqua)]($style)'
 
 [docker_context]
+disabled = true
 symbol = ""
 style = "bg:color_bg3"
 format = '[[ $symbol( $context) ](fg:#83a598 bg:color_bg3)]($style)'
@@ -100,7 +103,7 @@ vimcmd_replace_symbol = '[](bold fg:color_purple)'
 vimcmd_visual_symbol = '[](bold fg:color_yellow)'
 
 [kubernetes]
-disabled = false
+disabled = true
 style = "bg:color_blue"
 format = '[[ $symbol( $context) ](fg:color_fg0 bg:color_blue)]($style)'
 
@@ -112,3 +115,11 @@ style = "bg:color_orange fg:color_fg0"
 disabled = false
 style = "bg:color_bg3"
 format = '[[ (nix-$name )](fg:#83a598 bg:color_bg3)]($style)'
+
+[custom.kube_context]
+command = "kubectx -c 2>/dev/null"
+description = "The current kubernetes context"
+when = "command -v kubectx >/dev/null && kubectx -c >/dev/null 2>&1"
+# when = true
+format = '[[ ☸ ( $output ) ](fg:color_fg0 bg:color_blue)]($style)'
+style = "bg:color_blue"
