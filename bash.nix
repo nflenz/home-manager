@@ -7,7 +7,10 @@
     shellAliases = {
       "emacs" = "emacsclient -c";
       "cat" = "bat";
-      "journalctl" = "SYSTEMD_PAGERSECURE=1 SYSTEMD_PAGER='bat -l syslog' ${pkgs.systemd}/bin/journalctl";
+      "cheat" = "env cheat -c";
+      "journalctl" = "SYSTEMD_PAGERSECURE=1 SYSTEMD_PAGER='bat -l syslog' env journalctl";
+      "z" = "zoxide";
+      "df" = "grc df";
     };
 
     bashrcExtra = ''
@@ -28,16 +31,72 @@
       source <(starship init bash --print-full-init)
 
       # Better history
-      source <(atuin init bash)'';
+      source <(atuin init bash)
+
+      # Prevent C-s from freezing the terminal
+      stty -ixon
+    '';
+  };
+
+  programs.fish = {
+    enable = true;
+    shellAliases = config.programs.bash.shellAliases;
+
+    shellInit = ''
+      # Better history
+      eval "$(atuin init fish)"
+
+      # Better prompt
+      eval "$(starship init fish --print-full-init)"
+    '';
   };
 
   home.packages = with pkgs; [
+    # Language servers
+    fish-lsp
     bash-language-server
+    powershell-editor-services
 
     # Dependencies for our bash configuration
-    bat tldr atuin starship
+    atuin
+    starship
+    bat
+    grc
+
+    # Parsing text
+    jq jqp
+    yq
+    
+    # Modern spins on old IsIcommands
+    zoxide #-> cd
+    eza #-> ls
+    fzf #-> grep
+    fd #-> find
+    dust ncdu duf #-> du and df
+    ripgrep #-> grep
+    sd #-> sed
+
+    glances
+    grex
+
+    # Easy learning
+    cheat
+    tldr
     
     # Makes it easier to implement vterm tracking in emacs
     bash-preexec
+
+    # Record terminal
+    asciinema
+
+    # Networking
+    iputils
+    curl
+    ipcalc
+    wireshark
+    mitmproxy
+    mtr
+    # dog
+    xh
   ];
 }
