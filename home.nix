@@ -54,20 +54,37 @@
     powershell
 
     # VM/Cloud
-    azure-cli azure-cli-extensions.containerapp azure-storage-azcopy
+    azure-cli
+    azure-storage-azcopy
     terraform
     terraform-ls
+
     # gnome
     gnomeExtensions.caffeine
     dconf-editor
     gnome-tweaks
     gnomeExtensions.gsnap
-    
 
+    # kubernetes
+    yaml-language-server
+    kubectl
+    kubectx
+    # kubens
+    kubernetes-helm
+    kustomize
+    kubectl-images
+    ktop
+    krew
+    kind
+    k9s
+    
     # Containers
-    kubectl kind
     podman
-    docker docker-compose dockerfile-language-server-nodejs
+    buildah
+    skopeo
+    docker
+    docker-compose
+    dockerfile-language-server-nodejs
 
     # File systems
     sshfs
