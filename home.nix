@@ -116,9 +116,15 @@
     # Ansible
     ansible
     ansible-language-server
-    yaml-language-server
     # ansible-navigator
     ansible-lint
+
+    # python
+    (python3.withPackages (python-pkgs: [
+      python-pkgs.pip
+      python-pkgs.numpy
+    ]))
+    basedpyright
 
     # Markdown
     marksman
