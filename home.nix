@@ -1,18 +1,9 @@
-{ config, pkgs, ... }:
+{ config, pkgs, unstable, ... }:
 
 {
-
   imports = [
     ./bash.nix
   ];
-
-  home.sessionVariables = {
-    EDITOR = "emacsclient -c";
-    # Add color to manpages
-    MANPAGER = "sh -c 'sed -u -e \\\"s/\\x1B\[[0-9;]*m//g; s/.\\x08//g\\\" | bat -p -lman'";
-    PAGER = "bat";
-    NIXPKGS_ALLOW_UNFREE = "1";
-  };
 
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
@@ -33,6 +24,31 @@
   services.emacs = {
     package = pkgs.emacs-gtk;
     enable = true;
+    startWithUserSession = true;
+  };
+
+  programs.neovim = {
+    enable = true;
+    # defaultEditor = true;
+    viAlias = true;
+    vimAlias = true;
+
+    plugins = with pkgs.vimPlugins; [
+      neogit
+    ];
+  };
+
+  programs.vscode = {
+    enable = true;
+    profiles.default.extensions = with pkgs.vscode-extensions; [
+      ms-python.python
+      redhat.vscode-yaml
+      redhat.ansible
+      hashicorp.terraform
+      jnoortheen.nix-ide
+      sumneko.lua
+      tuttieee.emacs-mcx
+    ];
   };
 
   home.packages = with pkgs; [
@@ -47,15 +63,17 @@
     # Editors
     emacs-gtk
     emacs-lsp-booster
+    neovim-gtk
+    vscode
     zile
-
-    # Shells
-    nodePackages.bash-language-server
-    nushell
-    powershell
+    micro
 
     # VM/Cloud
-    azure-cli
+    (pkgs.azure-cli.withExtensions [
+      azure-cli-extensions.interactive
+      azure-cli-extensions.ssh
+      azure-cli-extensions.terraform
+    ])
     azure-storage-azcopy
     terraform
     terraform-ls
@@ -85,7 +103,7 @@
     skopeo
     docker
     docker-compose
-    dockerfile-language-server-nodejs
+    dockerfile-language-server
 
     # File systems
     sshfs
@@ -94,7 +112,7 @@
     
     # Secrets
     keepassxc
-    bitwarden
+    bitwarden-desktop
     age
     
     # Copying
@@ -105,7 +123,7 @@
     ripgrep
     
     # Torrents
-    # expressvpn
+    expressvpn
     qbittorrent
 
     # nix
@@ -113,34 +131,86 @@
     niv
     nixos-generators
     vulnix
+    comma
 
     # Ansible
     ansible
-    ansible-language-server
-    # ansible-navigator
+    unstable.ansible-language-server
+    ansible-navigator
     ansible-lint
 
+    # Chef
+    chef-cli
+
     # python
-    (python3.withPackages (python-pkgs: [
-      python-pkgs.pip
-      python-pkgs.numpy
+    (python3.withPackages (python-pkgs: with python-pkgs; [
+      pip
+      numpy
+      pandas
+      matplotlib
+      django
+      debugpy
     ]))
-    basedpyright
+    # unstable.basedpyright
+    unstable.zuban
+
+    go
+    delve
+
+    # lua
+    lua
+    lua-language-server
+
+    # C/C++
+    gcc
+
+    # java
+    zulu
+    jdt-language-server
+
+    # javascript/typescript
+    typescript-language-server
+    vscode-js-debug
 
     # Markdown
     marksman
+
+    # Jinja
+    jinja-lsp
 
     # SQL
     postgresql
     sqls
     
     # Media
-    spotify
     vlc
-    mplayer mpv
+    mplayer
+    mpv
     yt-dlp
     vdhcoapp
 
+    # Security
+    openssl
+    sslscan
+
+    # Networking
+    dig
+    tcpdump
+    nmap
+    netcat
+    wireshark
+
+    # javascript
+    nodejs
+    node2nix
+
+    # systems performance
+    bcc
+    bpftrace
+    strace
+    strace-analyzer
+    iperf
+    sysstat
   ];
 
   dconf.settings = {
@@ -167,44 +237,11 @@
 
   programs.git = {
     enable = true;
-    userName = "Nicholas Lenz";
-    userEmail = "Nicholas Lenz";
+    settings.user = {
+      name = "Nicholas Lenz";
+      email = "Nicholas Lenz";
+    };
   };
-
-
-  # Home Manager is pretty good at managing dotfiles. The primary way to manage
-  # plain files is through 'home.file'.
-  home.file = {
-    # # Building this configuration will create a copy of 'dotfiles/screenrc' in
-    # # the Nix store. Activating the configuration will then make '~/.screenrc' a
-    # # symlink to the Nix store copy.
-    # ".screenrc".source = dotfiles/screenrc;
-
-    # # You can also set the file content immediately.
-    # ".gradle/gradle.properties".text = ''
-    #   org.gradle.console=verbose
-    #   org.gradle.daemon.idletimeout=3600000
-    # '';
-
-    ".config/starship.toml".source = dotfiles/starship.toml;
-  };
-
-  # Home Manager can also manage your environment variables through
-  # 'home.sessionVariables'. These will be explicitly sourced when using a
-  # shell provided by Home Manager. If you don't want to manage your shell
-  # through Home Manager then you have to manually source 'hm-session-vars.sh'
-  # located at either
-  #
-  #  ~/.nix-profile/etc/profile.d/hm-session-vars.sh
-  #
-  # or
-  #
-  #  ~/.local/state/nix/profiles/profile/etc/profile.d/hm-session-vars.sh
-  #
-  # or
-  #
-  #  /etc/profiles/per-user/nicholas/etc/profile.d/hm-session-vars.sh
-  #
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;

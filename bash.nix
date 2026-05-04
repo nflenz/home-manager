@@ -1,16 +1,33 @@
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 {
+  home.sessionVariables = {
+    EDITOR = "emacsclient -c";
+    PAGER = "bat";
+    MANPAGER = "sh -c 'sed -u -e \\\"s/\\x1B\[[0-9;]*m//g; s/.\\x08//g\\\" | bat -p -lman'";
+    SYSTEMD_COLORS = "0";
+    SYSTEMD_PAGER = "bat -l syslog";
+    SYSTEMD_PAGERSECURE = "1";
+    NIXPKGS_ALLOW_UNFREE = "1";
+  };
+
   programs.bash = {
     enable = true;
+    sessionVariables = config.home.sessionVariables;
 
     shellAliases = {
-      "emacs" = "emacsclient -c";
-      "cat" = "bat";
-      "cheat" = "env cheat -c";
-      "journalctl" = "SYSTEMD_PAGERSECURE=1 SYSTEMD_PAGER='bat -l syslog' env journalctl";
-      "z" = "zoxide";
-      "df" = "grc df";
+      cd = "z";
+      emacs = "emacsclient -c";
+      cat = "bat -pp";
+      ls = "eza";
+      cheat = "env cheat -c";
+      df = "grc df -x tmpfs -x devtmpfs -x efivarfs -h";
+      du = "grc du -h";
+      pwsh = "pwsh -NoLogo";
+      watch = "watch -n1";
+      nix-shell = "env nix-shell --command zsh";
+      dmesg = "sudo dmesg -T";
+      free = "free -h";
     };
 
     bashrcExtra = ''
@@ -18,73 +35,217 @@
 
       # Directory tracking in emacs with vterm
       source ${pkgs.bash-preexec}/share/bash/bash-preexec.sh
-      
+
       vterm_printf() {
          printf "\e]%s\e\\" "$1"
-      }
+                                             }
 
       precmd(){
          vterm_printf "51;A$(whoami)@$(hostname):$(pwd)"
       }
 
-      # Better shell prompt
-      source <(starship init bash --print-full-init)
+      # Prevent C-s from freezing the terminal
+      stty -ixon
 
-      # Better history
-      source <(atuin init bash)
+      # colorize commands with grc
+      GRC_ALIASES=true
+      source ${pkgs.grc}/etc/profile.d/grc.sh
+    '';
+  };
+
+  programs.zsh = {
+    enable = true;
+    enableCompletion = false;
+    shellAliases = config.programs.bash.shellAliases;
+    sessionVariables = config.home.sessionVariables;
+    syntaxHighlighting.enable = true;
+    autosuggestion.enable = true;
+    autocd = true;
+
+    initContent = ''
+      # Configure keybindings to work like bash
+      autoload -U select-word-style
+      select-word-style bash
+      bindkey '^T' transpose-chars
+
+      # Bind other useful features
+      bindkey '^[o' fzf-file-widget
+
+      # cli completions with fzf
+      source ${pkgs.zsh-fzf-tab}/share/fzf-tab/fzf-tab.plugin.zsh
+      zstyle ':fzf-tab:*' fzf-flags \
+        '--bind=tab:accept' \
+        '--bind=space:print-query' \
+	'--bind=ctrl-space:put( )' \
+        '--bind=bspace:backward-delete-char/eof'
+
+      # # cache completions for azure
+      # fpath=(~/.zsh/completions $fpath)
+      # autoload -Uz compinit && compinit
+
+      # pair symbols
+      source ${pkgs.zsh-autopair}/share/zsh/zsh-autopair/autopair.zsh
+
+      # add color to commands
+      source ${pkgs.grc}/etc/grc.zsh
 
       # Prevent C-s from freezing the terminal
       stty -ixon
-    '';
+
+      toggle_sudo() {
+        if [[ $BUFFER == "" ]]; then
+	        BUFFER="sudo $(fc -ln -1)"
+	        zle end-of-line
+        elif [[ $BUFFER =~ "sudo*" ]]; then
+	        savcur=$CURSOR
+	        BUFFER=$(echo $BUFFER | sed 's/^sudo //')
+	        CURSOR=$(($savcur - 5))
+        else
+	        BUFFER="sudo $BUFFER"
+	        CURSOR=$(($CURSOR + 5))
+        fi
+      }
+
+      toggle_pager() {
+        if [[ $BUFFER == "" ]]; then
+	        BUFFER="$(fc -ln -1) | \$PAGER"
+	        zle end-of-line
+        elif [[ $BUFFER =~ "PAGER" ]]; then
+	        BUFFER=$(echo $BUFFER | sed 's/ *| \$PAGER//')
+        else
+	        BUFFER="$BUFFER | \$PAGER"
+        fi
+      }
+
+      print_files() {
+        savebuf=$BUFFER
+        savecur=$CURSOR
+        echo; ls; echo; echo
+        zle reset-prompt
+        BUFFER=$savebuf
+        CURSOR=$savecur
+      }
+
+      zle -N toggle_sudo
+      zle -N toggle_pager
+      zle -N print_files
+      bindkey '^[s' toggle_sudo
+      bindkey '^[p' toggle_pager
+      bindkey '^[l' print_files
+
+      # # fzf-tab settings 
+      # zstyle ':completion:*' fzf-search-display true
+      # zstyle ':fzf-tab:complete:*' fzf-bindings 'space:toggle+down'
+      # zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
+      # zstyle ':fzf-tab:*' query-string prefix first
+
+      # # carapace settings
+      export CARAPACE_BRIDGES='zsh,fish,bash,inshellisense'
+      zstyle ':completion:*' format $'\e[2;37mCompleting %d\e[m'
+
+    '';    
   };
 
   programs.fish = {
     enable = true;
     shellAliases = config.programs.bash.shellAliases;
 
+    # Disable the "welcome to fish" message
     shellInit = ''
-      # Better history
-      eval "$(atuin init fish)"
+      set -g fish_greeting ""
 
-      # Better prompt
-      eval "$(starship init fish --print-full-init)"
+      # add color to commands
+      source ${pkgs.grc}/etc/grc.fish
+    '';
+
+    plugins = [
+      { name = "pisces"; src = pkgs.fishPlugins.pisces.src; }
+    ];
+  };
+
+  programs.nushell = {
+    enable = true;
+    # Remove the aliases that replace nushell's builtin commands
+    shellAliases = lib.attrsets.removeAttrs config.programs.bash.shellAliases [ "cd" "ls" "du" "ps" "watch" ];
+    extraConfig = ''
+      # disable the banner
+      $env.config.show_banner = false
+
+      # fix carapace completions
+      let carapace_completer = {|spans|
+        carapace $spans.0 nushell ...$spans | from json
+                               }
+      $env.config.completions.external.completer = $carapace_completer
     '';
   };
 
+  programs.atuin.enable = true;
+  programs.zoxide.enable = true;
+  programs.fzf.enable = true;
+
+  # Configure starship
+  programs.starship.enable = true;
+  home.file = {
+    ".config/starship.toml".source = dotfiles/starship.toml;
+  };
+
+  programs.carapace = {
+    enable = true;
+    # Seems to break completions for zsh
+    # https://github.com/Aloxaf/fzf-tab/issues/503
+    enableZshIntegration = false;
+  };
+
+  # Powershell ################################################################
+  home.file.".config/powershell/profile.ps1".text = ''
+      # enable starship
+      Invoke-Expression (&starship init powershell)
+
+      # enable carapace
+      carapace _carapace powershell | Out-String | Invoke-Expression
+  '';
+
+  # Xonsh #####################################################################
+  home.file.".config/xonsh/rc.xsh".text = ''
+    # enable starship
+    execx($(starship init xonsh))
+
+    # enable atuin
+    execx($(atuin init xonsh))
+
+    # enable carapace
+    exec($(carapace _carapace xonsh))
+  '';
+
   home.packages = with pkgs; [
+    # Other shells
+    powershell
+    xonsh
+
     # Language servers
     fish-lsp
     bash-language-server
     powershell-editor-services
 
-    # Dependencies for our bash configuration
-    atuin
-    starship
-    bat
+    # Dependencies for our shell configurations
     grc
+    bat
+    eza
 
     # Parsing text
     jq jqp
     yq
-    
-    # Modern spins on old IsIcommands
-    zoxide #-> cd
-    eza #-> ls
+
+    # Modern spins on old commands
     fzf #-> grep
     fd #-> find
-    dust ncdu duf #-> du and df
+    duf #-> df
     ripgrep #-> grep
     sd #-> sed
-
-    glances
-    grex
 
     # Easy learning
     cheat
     tldr
-    
-    # Makes it easier to implement vterm tracking in emacs
-    bash-preexec
 
     # Record terminal
     asciinema
@@ -96,7 +257,7 @@
     wireshark
     mitmproxy
     mtr
-    # dog
+    dog
     xh
   ];
 }
