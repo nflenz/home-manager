@@ -7,8 +7,7 @@ $shell\
 [](bg:color_yellow fg:color_orange)\
 $directory\
 [](fg:color_yellow bg:color_aqua)\
-$git_branch\
-$git_status\
+$container\
 [](fg:color_aqua bg:color_blue)\
 $custom\
 [](fg:color_blue bg:color_bg3)\
@@ -117,3 +116,10 @@ when = "command -v kubectx >/dev/null && kubectx -c >/dev/null 2>&1"
 format = '[[ ☸ ( $output ) ](fg:color_fg0 bg:color_blue)]($style)'
 style = "bg:color_blue"
 shell = "bash"
+
+[container]
+format = '[ $name ]($style)'
+style = "bg:color_aqua"
+# symbol = '📦 '
+# style = 'bold red'
+disabled = false

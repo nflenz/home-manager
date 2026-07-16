@@ -1,4 +1,4 @@
-{ config, pkgs, unstable, ... }:
+ { config, pkgs, unstable, ... }:
 
 {
   imports = [
@@ -7,8 +7,10 @@
 
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
-  home.username = "nicholas";
-  home.homeDirectory = "/home/nicholas";
+  home = {
+    username = builtins.getEnv "USER";
+    homeDirectory = builtins.getEnv "HOME";
+  };
 
   # This value determines the Home Manager release that your configuration is
   # compatible with. This helps avoid breakage when a new Home Manager release
@@ -22,58 +24,45 @@
   nixpkgs.config.allowUnfree = true;
 
   services.emacs = {
-    package = pkgs.emacs-gtk;
+    package = unstable.emacs31-nox;
     enable = true;
     startWithUserSession = true;
   };
 
-  programs.neovim = {
-    enable = true;
-    # defaultEditor = true;
-    viAlias = true;
-    vimAlias = true;
-
-    plugins = with pkgs.vimPlugins; [
-      neogit
-    ];
-  };
-
-  programs.vscode = {
-    enable = true;
-    profiles.default.extensions = with pkgs.vscode-extensions; [
-      ms-python.python
-      redhat.vscode-yaml
-      redhat.ansible
-      hashicorp.terraform
-      jnoortheen.nix-ide
-      sumneko.lua
-      tuttieee.emacs-mcx
-    ];
-  };
-
   home.packages = with pkgs; [
 
-    # Gaming
+    # Gaming[]
     sunshine
     ares
 
-    # Comics
+    # Books/Comics
     yacreader
+    calibre
+
+    # VC
+    gitu
+    gitleaks
+    gh
+    forgejo-cli
+    jj
     
     # Editors
-    emacs-gtk
+    unstable.emacs31-nox
     emacs-lsp-booster
     neovim-gtk
     vscode
     zile
     micro
+    kakoune
 
     # VM/Cloud
     (pkgs.azure-cli.withExtensions [
-      azure-cli-extensions.interactive
+      # azure-cli-extensions.interactive
       azure-cli-extensions.ssh
       azure-cli-extensions.terraform
+      # azure-cli-extensions.alias
     ])
+    cloudflared
     azure-storage-azcopy
     terraform
     terraform-ls
@@ -88,7 +77,6 @@
     yaml-language-server
     kubectl
     kubectx
-    # kubens
     kubernetes-helm
     kustomize
     kubectl-images
@@ -98,6 +86,7 @@
     k9s
     
     # Containers
+    distrobox
     podman
     buildah
     skopeo
@@ -112,7 +101,6 @@
     
     # Secrets
     keepassxc
-    bitwarden-desktop
     age
     
     # Copying
@@ -164,9 +152,16 @@
     # C/C++
     gcc
 
+    # Common LISP
+    sbcl
+
     # java
     zulu
     jdt-language-server
+
+    # ruby
+    ruby
+    solargraph
 
     # javascript/typescript
     typescript-language-server
@@ -187,7 +182,7 @@
     mplayer
     mpv
     yt-dlp
-    vdhcoapp
+    plex-desktop
 
     # Security
     openssl
@@ -202,7 +197,6 @@
 
     # javascript
     nodejs
-    node2nix
 
     # systems performance
     bcc
@@ -211,6 +205,8 @@
     strace-analyzer
     iperf
     sysstat
+
+    systemd-language-server
   ];
 
   dconf.settings = {

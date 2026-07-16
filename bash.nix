@@ -3,12 +3,13 @@
 {
   home.sessionVariables = {
     EDITOR = "emacsclient -c";
-    PAGER = "bat";
+    PAGER = "bat -n";
     MANPAGER = "sh -c 'sed -u -e \\\"s/\\x1B\[[0-9;]*m//g; s/.\\x08//g\\\" | bat -p -lman'";
     SYSTEMD_COLORS = "0";
     SYSTEMD_PAGER = "bat -l syslog";
     SYSTEMD_PAGERSECURE = "1";
     NIXPKGS_ALLOW_UNFREE = "1";
+    BLOCK_SIZE = "human-readable";
   };
 
   programs.bash = {
@@ -18,16 +19,15 @@
     shellAliases = {
       cd = "z";
       emacs = "emacsclient -c";
-      cat = "bat -pp";
-      ls = "eza";
-      cheat = "env cheat -c";
-      df = "grc df -x tmpfs -x devtmpfs -x efivarfs -h";
-      du = "grc du -h";
+      cat = "bat -n";
+      df = "grc df -x tmpfs -x devtmpfs -x efivarfs";
       pwsh = "pwsh -NoLogo";
-      watch = "watch -n1";
-      nix-shell = "env nix-shell --command zsh";
+      watch = "hwatch";
+      nix-shell = "nix-shell --command zsh";
       dmesg = "sudo dmesg -T";
-      free = "free -h";
+      hwatch = "hwatch -cp grc";
+      magit = "emacsclient -t --eval '(magit)'";
+
     };
 
     bashrcExtra = ''
@@ -89,8 +89,14 @@
       # add color to commands
       source ${pkgs.grc}/etc/grc.zsh
 
-      # Prevent C-s from freezing the terminal
-      stty -ixon
+      # # Prevent C-s from freezing the terminal
+      # if [[ -t 0 ]]; then
+      #   stty -ixon
+      # fi
+
+      function cheat {
+        env cheat $@ | bat -ppl bash
+      }
 
       toggle_sudo() {
         if [[ $BUFFER == "" ]]; then
@@ -103,6 +109,20 @@
         else
 	        BUFFER="sudo $BUFFER"
 	        CURSOR=$(($CURSOR + 5))
+        fi
+      }
+
+      toggle_hwatch() {
+        if [[ $BUFFER == "" ]]; then
+	        BUFFER="hwatch $(fc -ln -1)"
+	        zle end-of-line
+        elif [[ $BUFFER =~ "hwatch*" ]]; then
+	        savcur=$CURSOR
+	        BUFFER=$(echo $BUFFER | sed 's/^hwatch //')
+	        CURSOR=$(($savcur - 7))
+        else
+	        BUFFER="hwatch $BUFFER"
+	        CURSOR=$(($CURSOR + 7))
         fi
       }
 
@@ -126,12 +146,29 @@
         CURSOR=$savecur
       }
 
+      git_status() {
+        savebuf=$BUFFER
+        savecur=$CURSOR
+        echo; git status; echo; echo
+        # echo; env ls -C --color=always; echo; echo
+        zle reset-prompt
+        BUFFER=$savebuf
+        CURSOR=$savecur
+      }
+
+      autoload -Uz edit-command-line
+      zle -N edit-command-line
       zle -N toggle_sudo
+      zle -N toggle_hwatch
       zle -N toggle_pager
       zle -N print_files
+      zle -N git_status
       bindkey '^[s' toggle_sudo
+      bindkey '^[w' toggle_hwatch
       bindkey '^[p' toggle_pager
       bindkey '^[l' print_files
+      bindkey '^[g' git_status
+      bindkey '^[e' edit-command-line
 
       # # fzf-tab settings 
       # zstyle ':completion:*' fzf-search-display true
@@ -139,10 +176,12 @@
       # zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
       # zstyle ':fzf-tab:*' query-string prefix first
 
-      # # carapace settings
+      # carapace settings
       export CARAPACE_BRIDGES='zsh,fish,bash,inshellisense'
       zstyle ':completion:*' format $'\e[2;37mCompleting %d\e[m'
 
+      # Fix grc's handling of ls
+      unfunction ls
     '';    
   };
 
@@ -231,6 +270,7 @@
     grc
     bat
     eza
+    hwatch
 
     # Parsing text
     jq jqp
@@ -242,6 +282,7 @@
     duf #-> df
     ripgrep #-> grep
     sd #-> sed
+    viddy #-> watch
 
     # Easy learning
     cheat
