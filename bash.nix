@@ -1,6 +1,11 @@
 { config, lib, pkgs, ... }:
 
 {
+  home.sessionPath = [
+    "/usr/local/bin"
+    "$HOME/.local/bin"
+  ];
+
   home.sessionVariables = {
     EDITOR = "emacsclient -c";
     PAGER = "bat -n";
