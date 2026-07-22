@@ -326,6 +326,10 @@
 
     # stocks
     ticker
+
+    # job runners
+    just
+    gnumake
     
   ];
 }
