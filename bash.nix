@@ -132,12 +132,12 @@
 
       toggle_pager() {
         if [[ $BUFFER == "" ]]; then
-	        BUFFER="$(fc -ln -1) | \$PAGER"
+	        BUFFER="$(fc -ln -1) | \$=PAGER"
 	        zle end-of-line
         elif [[ $BUFFER =~ "PAGER" ]]; then
-	        BUFFER=$(echo $BUFFER | sed 's/ *| \$PAGER//')
+	        BUFFER=$(echo $BUFFER | sed 's/ *| \$=PAGER//')
         else
-	        BUFFER="$BUFFER | \$PAGER"
+	        BUFFER="$BUFFER | \$=PAGER"
         fi
       }
 
