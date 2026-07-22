@@ -32,7 +32,7 @@
       dmesg = "sudo dmesg -T";
       hwatch = "hwatch -cp grc";
       magit = "emacsclient -t --eval '(magit)'";
-
+      path = "echo $PATH | sed 's/:/\\n/g'";
     };
 
     bashrcExtra = ''
