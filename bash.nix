@@ -237,9 +237,6 @@
 
   programs.carapace = {
     enable = true;
-    # Seems to break completions for zsh
-    # https://github.com/Aloxaf/fzf-tab/issues/503
-    enableZshIntegration = false;
   };
 
   # Powershell ################################################################
