@@ -247,6 +247,9 @@
 
       # enable carapace
       carapace _carapace powershell | Out-String | Invoke-Expression
+
+      # enable atuin
+      atuin init powershell | Out-String | Invoke-Expression
   '';
 
   # Xonsh #####################################################################
