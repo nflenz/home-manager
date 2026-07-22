@@ -323,6 +323,12 @@
 
     # Copying
     rsync
+
+    # task management
+    taskwarrior3
+
+    # stocks
+    ticker
     
   ];
 }
