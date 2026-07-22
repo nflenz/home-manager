@@ -86,7 +86,6 @@
 
       # # cache completions for azure
       # fpath=(~/.zsh/completions $fpath)
-      # autoload -Uz compinit && compinit
 
       # pair symbols
       source ${pkgs.zsh-autopair}/share/zsh/zsh-autopair/autopair.zsh
@@ -187,6 +186,9 @@
 
       # Fix grc's handling of ls
       unfunction ls
+
+      # Fix fzf-tab completion
+      autoload -Uz compinit && compinit
     '';    
   };
 
