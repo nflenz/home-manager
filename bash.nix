@@ -285,12 +285,8 @@
     yq
 
     # Modern spins on old commands
-    fzf #-> grep
-    fd #-> find
-    duf #-> df
-    ripgrep #-> grep
-    sd #-> sed
-    viddy #-> watch
+    fzf
+    ripgrep
 
     # Easy learning
     cheat
@@ -308,5 +304,23 @@
     mtr
     dog
     xh
+
+    # systems performance
+    bcc
+    bpftrace
+    strace
+    strace-analyzer
+    iperf
+    sysstat
+
+    # networking
+    dig
+    tcpdump
+    nmap
+    netcat
+
+    # Copying
+    rsync
+    
   ];
 }

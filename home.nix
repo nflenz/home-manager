@@ -31,47 +31,26 @@
 
   home.packages = with pkgs; [
 
-    # Gaming[]
-    sunshine
-    ares
-
-    # Books/Comics
-    yacreader
-    calibre
-
     # VC
-    gitu
+    git
     gitleaks
     gh
-    forgejo-cli
-    jj
     
     # Editors
     unstable.emacs31-nox
     emacs-lsp-booster
-    neovim-gtk
-    vscode
     zile
     micro
-    kakoune
 
     # VM/Cloud
     (pkgs.azure-cli.withExtensions [
-      # azure-cli-extensions.interactive
       azure-cli-extensions.ssh
       azure-cli-extensions.terraform
-      # azure-cli-extensions.alias
     ])
     cloudflared
     azure-storage-azcopy
     terraform
     terraform-ls
-
-    # gnome
-    gnomeExtensions.caffeine
-    dconf-editor
-    gnome-tweaks
-    gnomeExtensions.gsnap
 
     # kubernetes
     yaml-language-server
@@ -94,26 +73,10 @@
     docker-compose
     dockerfile-language-server
 
-    # File systems
-    sshfs
-    ntfs3g
-    encfs
-    
     # Secrets
     keepassxc
     age
     
-    # Copying
-    syncthing
-    rsync
-
-    # Searching
-    ripgrep
-    
-    # Torrents
-    expressvpn
-    qbittorrent
-
     # nix
     nixd
     niv
@@ -177,59 +140,18 @@
     postgresql
     sqls
     
-    # Media
-    vlc
-    mplayer
-    mpv
-    yt-dlp
-    plex-desktop
-
     # Security
     openssl
     sslscan
 
     # Networking
-    dig
-    tcpdump
-    nmap
-    netcat
     wireshark
 
     # javascript
     nodejs
 
-    # systems performance
-    bcc
-    bpftrace
-    strace
-    strace-analyzer
-    iperf
-    sysstat
-
     systemd-language-server
   ];
-
-  dconf.settings = {
-    # Oh boy do I hate the system bell
-    "org/gnome/Console" =  {
-      audible-bell = false;
-    };
-
-    # Wallpaper settings
-    "org/gnome/desktop/background" = {
-      picture-uri = "file:///home/nicholas/Downloads/aishot-647.jpg";
-      picture-uri-dark = "file:///home/nicholas/Downloads/aishot-647.jpg";
-      primary-color = "#ff7800";
-      secondary-color = "#000000";
-      color-shading-type = "solid";
-      picture-options = "zoom";
-    };
-
-    "org/gnome/desktop/media-handling" = {
-      automount = true;
-      automount-open = false;
-    };
-  };
 
   programs.git = {
     enable = true;
