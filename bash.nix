@@ -237,6 +237,8 @@
 
   programs.carapace = {
     enable = true;
+    # It adds extra backslashes to fzf-tab
+    enableZshIntegration = false;
   };
 
   # Powershell ################################################################
