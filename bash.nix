@@ -331,6 +331,7 @@
 
     # job runners
     just
+    just-lsp
     gnumake
     
   ];

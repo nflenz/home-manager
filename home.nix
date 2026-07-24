@@ -1,4 +1,4 @@
- { config, pkgs, unstable, ... }:
+{ config, pkgs, unstable, ... }:
 
 {
   imports = [
@@ -23,12 +23,6 @@
 
   nixpkgs.config.allowUnfree = true;
 
-  services.emacs = {
-    package = unstable.emacs31-nox;
-    enable = true;
-    startWithUserSession = true;
-  };
-
   home.packages = with pkgs; [
 
     # VC
@@ -37,8 +31,6 @@
     gh
     
     # Editors
-    unstable.emacs31-nox
-    emacs-lsp-booster
     zile
     micro
 
@@ -50,10 +42,8 @@
     cloudflared
     azure-storage-azcopy
     terraform
-    terraform-ls
 
     # kubernetes
-    yaml-language-server
     kubectl
     kubectx
     kubernetes-helm
@@ -71,7 +61,6 @@
     skopeo
     docker
     docker-compose
-    dockerfile-language-server
 
     # Secrets
     keepassxc
@@ -86,7 +75,6 @@
 
     # Ansible
     ansible
-    unstable.ansible-language-server
     ansible-navigator
     ansible-lint
 
@@ -102,15 +90,11 @@
       django
       debugpy
     ]))
-    # unstable.basedpyright
-    unstable.zuban
 
     go
-    delve
 
     # lua
     lua
-    lua-language-server
 
     # C/C++
     gcc
@@ -120,25 +104,12 @@
 
     # java
     zulu
-    jdt-language-server
 
     # ruby
     ruby
-    solargraph
-
-    # javascript/typescript
-    typescript-language-server
-    vscode-js-debug
-
-    # Markdown
-    marksman
-
-    # Jinja
-    jinja-lsp
 
     # SQL
     postgresql
-    sqls
     
     # Security
     openssl
@@ -149,8 +120,6 @@
 
     # javascript
     nodejs
-
-    systemd-language-server
   ];
 
   programs.git = {

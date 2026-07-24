@@ -30,6 +30,7 @@
 
         modules = [
           ./home.nix
+	  ./emacs.nix
 	  ./desktop.nix
         ];
       };
