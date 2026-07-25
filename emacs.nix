@@ -8,8 +8,10 @@
       
       # Tree-sitter
       treesit-grammars.with-all-grammars
+      treesit-auto
 
       # Editing
+      avy
       beacon
       ctrlf
       expand-region
@@ -37,6 +39,7 @@
       nginx-mode
       nix-ts-mode
       nushell-ts-mode
+      perl-ts-mode
       powershell
       rpm-spec-mode
       terraform-mode
@@ -46,14 +49,19 @@
       cape
       consult
       corfu
+      corfu-prescient
       embark
+      embark-consult
+      marginalia
       orderless
       prescient
       vertico
+      vertico-prescient
       yasnippet-capf
 
       # Development
       aggressive-indent
+      consult-flycheck
       dape
       diff-hl
       direnv
@@ -65,10 +73,18 @@
       paredit
       projectile
       reformatter
+      sideline
+      sideline-flycheck
       vc-jj
       yasnippet
       yasnippet-snippets
 
+      # Documentation
+      helpful
+
+      # Terminal
+      eat
+      
       # AI
       gptel
     ];
@@ -91,17 +107,20 @@
     # LSP servers
     ansible-language-server
     awk-language-server
+    basedpyright
     bash-language-server
     dockerfile-language-server
     elixir-ls
     gopls
     jdt-language-server
     jinja-lsp
+    jq-lsp
     just-lsp
     lua-language-server
     marksman
     nginx-language-server
     nixd
+    perlnavigator
     powershell-editor-services
     rassumfrassum
     rust-analyzer
@@ -112,10 +131,23 @@
     typescript-language-server
     vscode-js-debug
     yaml-language-server
+    zls
     zuban
 
+    # Formatters
+    jqfmt
+    nixfmt
+    terraform
+    rubyfmt
+    rustfmt
+
     # Debuggers
+    bashdb
     delve
 
+    # Compilers/Interpreters
+    perl
+    ruby
+    
   ];
 }

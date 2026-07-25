@@ -27,6 +27,7 @@
     # Gaming
     sunshine
     ares
+    mednafen
 
     # Books/Comics
     yacreader

@@ -1,5 +1,17 @@
 {
   "nodes": {
+    "bios-saturn-usa": {
+      "flake": false,
+      "locked": {
+        "narHash": "sha256-Fobr+MiSxTaWLP3zrGu11nFNKmywsYkHratZ1jkBX8A=",
+        "type": "file",
+        "url": "https://github.com/Abdess/retrobios/blob/main/bios/Sega/Saturn/mpr-17933.bin"
+      },
+      "original": {
+        "type": "file",
+        "url": "https://github.com/Abdess/retrobios/blob/main/bios/Sega/Saturn/mpr-17933.bin"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -55,6 +67,7 @@
     },
     "root": {
       "inputs": {
+        "bios-saturn-usa": "bios-saturn-usa",
         "home-manager": "home-manager",
         "nixpkgs": "nixpkgs",
         "nixpkgs-unstable": "nixpkgs-unstable"
