@@ -81,32 +81,14 @@
     # Chef
     chef-cli
 
-    # python
-    (python3.withPackages (python-pkgs: with python-pkgs; [
-      pip
-      numpy
-      pandas
-      matplotlib
-      django
-      debugpy
-    ]))
-
-    go
-
     # lua
     lua
 
     # C/C++
     gcc
-
-    # Common LISP
-    sbcl
-
+    
     # java
     zulu
-
-    # ruby
-    ruby
 
     # SQL
     postgresql

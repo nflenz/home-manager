@@ -18,6 +18,7 @@
       kirigami
       multiple-cursors
       ryo-modal
+      surround
       visual-regexp
       vundo
       whitespace-cleanup-mode
@@ -43,6 +44,7 @@
       powershell
       racket-mode
       rpm-spec-mode
+      sly
       terraform-mode
       zig-ts-mode
 
@@ -153,13 +155,37 @@
 
     # Compilers/Interpreters
     go
+    lua
+    racket
+    rustc
+    sbcl
+
+    (python3.withPackages (python-pkgs: with python-pkgs; [
+      debugpy
+      django
+      fabric
+      kubernetes
+      matplotlib
+      numpy
+      pandas
+      paramiko
+      pip
+      psutil
+      pytest
+      python-hcl2
+      requests
+    ]))
+    
     (perl.withPackages (p: with p; [
       PerlLanguageServer
     ]))
-    racket
-    ruby
-    rustc
-    sbcl
+
+    (ruby.withPackages (p: with p; [
+      thor
+    ]))
+
+    # Packaging
+    fpm
     
   ];
 }
