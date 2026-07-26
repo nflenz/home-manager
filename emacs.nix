@@ -41,6 +41,7 @@
       nushell-ts-mode
       perl-ts-mode
       powershell
+      racket-mode
       rpm-spec-mode
       terraform-mode
       zig-ts-mode
@@ -68,6 +69,7 @@
       flycheck
       flycheck-eglot
       forge
+      go-snippets
       lsp-mode
       magit
       paredit
@@ -80,7 +82,9 @@
       yasnippet-snippets
 
       # Documentation
+      eldoc-box
       helpful
+      terraform-doc
 
       # Terminal
       eat
@@ -112,6 +116,7 @@
     dockerfile-language-server
     elixir-ls
     gopls
+    haskell-language-server
     jdt-language-server
     jinja-lsp
     jq-lsp
@@ -138,16 +143,23 @@
     jqfmt
     nixfmt
     terraform
-    rubyfmt
+    rubyfmt 
     rustfmt
 
     # Debuggers
     bashdb
     delve
+    gdb
 
     # Compilers/Interpreters
-    perl
+    go
+    (perl.withPackages (p: with p; [
+      PerlLanguageServer
+    ]))
+    racket
     ruby
+    rustc
+    sbcl
     
   ];
 }
