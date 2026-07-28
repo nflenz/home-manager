@@ -8,91 +8,91 @@
       
       # Tree-sitter
       treesit-grammars.with-all-grammars
-      treesit-auto
+      # treesit-auto
 
-      # Editing
-      avy
-      beacon
-      ctrlf
-      expand-region
-      kirigami
-      multiple-cursors
-      ryo-modal
-      surround
-      visual-regexp
-      vundo
-      whitespace-cleanup-mode
-      xah-fly-keys
+      # # Editing
+      # avy
+      # beacon
+      # ctrlf
+      # expand-region
+      # kirigami
+      # multiple-cursors
+      # ryo-modal
+      # surround
+      # visual-regexp
+      # vundo
+      # whitespace-cleanup-mode
+      # xah-fly-keys
 
-      # Themes
-      ef-themes
+      # # Themes
+      # ef-themes
 
-      # Language major modes
-      ansible
-      ansible-doc
-      ansible-vault
-      awk-ts-mode
-      elixir-ts-mode
-      haskell-ts-mode
-      jinja2-mode
-      jq-ts-mode
-      just-ts-mode
-      nginx-mode
-      nix-ts-mode
-      nushell-ts-mode
-      perl-ts-mode
-      powershell
-      racket-mode
-      rpm-spec-mode
-      sly
-      terraform-mode
-      zig-ts-mode
+      # # Language major modes
+      # ansible
+      # ansible-doc
+      # ansible-vault
+      # awk-ts-mode
+      # elixir-ts-mode
+      # haskell-ts-mode
+      # jinja2-mode
+      # jq-ts-mode
+      # just-ts-mode
+      # nginx-mode
+      # nix-ts-mode
+      # nushell-ts-mode
+      # perl-ts-mode
+      # powershell
+      # racket-mode
+      # rpm-spec-mode
+      # sly
+      # terraform-mode
+      # zig-ts-mode
 
-      # Completion
-      cape
-      consult
-      corfu
-      corfu-prescient
-      embark
-      embark-consult
-      marginalia
-      orderless
-      prescient
-      vertico
-      vertico-prescient
-      yasnippet-capf
+      # # Completion
+      # cape
+      # consult
+      # corfu
+      # corfu-prescient
+      # embark
+      # embark-consult
+      # marginalia
+      # orderless
+      # prescient
+      # vertico
+      # vertico-prescient
+      # yasnippet-capf
 
-      # Development
-      aggressive-indent
-      consult-flycheck
-      dape
-      diff-hl
-      direnv
-      flycheck
-      flycheck-eglot
-      forge
-      go-snippets
-      lsp-mode
-      magit
-      paredit
-      projectile
-      reformatter
-      sideline
-      sideline-flycheck
-      vc-jj
-      yasnippet
-      yasnippet-snippets
+      # # Development
+      # aggressive-indent
+      # consult-flycheck
+      # dape
+      # diff-hl
+      # direnv
+      # flycheck
+      # flycheck-eglot
+      # forge
+      # go-snippets
+      # lsp-mode
+      # magit
+      # paredit
+      # projectile
+      # reformatter
+      # sideline
+      # sideline-flycheck
+      # vc-jj
+      # yasnippet
+      # yasnippet-snippets
 
-      # Documentation
-      eldoc-box
-      helpful
-      terraform-doc
+      # # Documentation
+      # eldoc-box
+      # helpful
+      # terraform-doc
 
-      # Terminal
-      eat
+      # # Terminal
+      # eat
       
-      # AI
-      gptel
+      # # AI
+      # gptel
     ];
   };
 
