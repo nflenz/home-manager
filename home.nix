@@ -23,12 +23,23 @@
 
   nixpkgs.config.allowUnfree = true;
 
+  programs.gh = {
+    enable = true;
+    extensions = with pkgs; [
+      gh-dash
+      gh-eco
+      gh-f
+      gh-i
+      gh-markdown-preview
+      gh-s
+    ];
+  };
+
   home.packages = with pkgs; [
 
     # VC
     git
     gitleaks
-    gh
     
     # Editors
     zile
