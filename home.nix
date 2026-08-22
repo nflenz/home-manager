@@ -115,6 +115,10 @@
 
     # javascript
     nodejs
+
+    clojure
+    clojure-lsp
+    babashka
   ];
 
   programs.git = {
