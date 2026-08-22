@@ -35,6 +35,7 @@
       modules = [
         ./home.nix
 	./emacs.nix
+	./version-control.nix
 	./desktop.nix
 	./gaming.nix
         ];
@@ -47,6 +48,7 @@
 
       modules = [
         ./home.nix
+	./version-control.nix
       ];
     };
   };

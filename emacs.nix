@@ -102,11 +102,7 @@
   };
 
   home.packages = with pkgs; [
-
-    # For VC
-    git
-    jj
-    
+  
     # Improve lsp performance
     emacs-lsp-booster
 
