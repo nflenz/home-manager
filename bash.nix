@@ -282,7 +282,7 @@
     hwatch
 
     # Parsing text
-    jq jqp
+    jq jnv
     yq
 
     # Modern spins on old commands
