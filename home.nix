@@ -54,6 +54,7 @@
     cloudflared
     azure-storage-azcopy
     terraform
+    pulumi-bin
 
     # kubernetes
     kubectl
