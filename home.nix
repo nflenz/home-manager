@@ -33,6 +33,7 @@
     # Editors
     zile
     micro
+    edwood
 
     # VM/Cloud
     (pkgs.azure-cli.withExtensions [
