@@ -85,6 +85,8 @@
     nixos-generators
     vulnix
     comma
+    nh
+    nix-index
 
     # Ansible
     ansible
