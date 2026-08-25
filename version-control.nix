@@ -14,7 +14,6 @@
   };
 
   home.packages = with pkgs; [
-    git
     gitleaks
     jujutsu
 
@@ -25,13 +24,35 @@
 
   programs.git = {
     enable = true;
-    aliases = {
-      co = "checkout";
-      amend = "commit --amend";
+
+    settings = {
+      pull.rebase = true;
+      rerere.enabled = true;
+      push.autoSetupRemote = true;
+
+      aliases = {
+	amend = "commit --amend";
+	bb = "!better-branch.sh";
+	co = "checkout";
+	lg = "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit";
+	nuke = "clean -fd";
+	st = "status -sb";
+	undo = "reset HEAD~1 --mixed";
+      };
+
+      user = {
+	name = "Nicholas Lenz";
+	email = "Nicholas Lenz";
+      };
     };
-    settings.user = {
-      name = "Nicholas Lenz";
-      email = "Nicholas Lenz";
-    };
+
+    ignores = [
+      "*~"
+      "*.swp"
+      ".env"
+      ".direnv/"
+      "result"
+    ];
+
   };
 }
