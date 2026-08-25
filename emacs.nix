@@ -3,7 +3,7 @@
 {
   programs.emacs = {
     enable = true;
-    package = unstable.emacs31-nox;    
+    package = unstable.emacs31-pgtk;  
     extraPackages = epkgs: with epkgs; [
       
       # Tree-sitter
